@@ -102,6 +102,7 @@ class _InteractiveMapsMarkerState extends State<InteractiveMapsMarker> {
   }
 
   Widget _buildMap() {
+    rebuildMarkers(currentIndex);
     return Positioned.fill(
       child: ValueListenableBuilder(
         valueListenable: selectedMarker,
