@@ -8,7 +8,7 @@ class SimpleUsage extends StatelessWidget {
     ..add(MarkerItem(id: 2, latitude: 31.4718461, longitude: 74.3531591))
     ..add(MarkerItem(id: 3, latitude: 31.5325107, longitude: 74.3610325))
     ..add(MarkerItem(id: 4, latitude: 31.4668809, longitude: 74.31354));
-
+  LatLng _cameraTarget;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +22,17 @@ class SimpleUsage extends StatelessWidget {
           MarkerItem item = markers[index];
           return BottomTile(item: item);
         },
+        onCameraMove: _onCameraMove,
+        onCameraIdle: _onCameraIdle,
       ),
     );
   }
+
+  void _onCameraMove(CameraPosition position) {
+    _cameraTarget = position.target;
+  }
+
+  void _onCameraIdle() {}
 }
 
 class BottomTile extends StatelessWidget {
@@ -44,11 +52,14 @@ class BottomTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("Store Name", style: Theme.of(context).textTheme.headline5),
-                  Text("${item.latitude} , ${item.longitude}", style: Theme.of(context).textTheme.caption),
+                  Text("Store Name",
+                      style: Theme.of(context).textTheme.headline5),
+                  Text("${item.latitude} , ${item.longitude}",
+                      style: Theme.of(context).textTheme.caption),
                   stars(),
                   Expanded(
-                    child: Text('Cras et ante metus. Vivamus dignissim augue sit amet nisi volutpat, vitae tincidunt lacus accumsan. '),
+                    child: Text(
+                        'Cras et ante metus. Vivamus dignissim augue sit amet nisi volutpat, vitae tincidunt lacus accumsan. '),
                   )
                 ],
               ),
@@ -68,7 +79,11 @@ class BottomTile extends StatelessWidget {
         Icon(Icons.star_half, color: Colors.orangeAccent),
         Icon(Icons.star_border, color: Colors.orangeAccent),
         SizedBox(width: 3.0),
-        Text('3.5', style: TextStyle(color: Colors.orangeAccent, fontSize: 24.0, fontWeight: FontWeight.w600))
+        Text('3.5',
+            style: TextStyle(
+                color: Colors.orangeAccent,
+                fontSize: 24.0,
+                fontWeight: FontWeight.w600))
       ],
     );
   }

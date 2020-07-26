@@ -61,6 +61,8 @@ zoom | ``` double ``` | 12.0 | Default zoom value for initial map screen.
 itemHeight | ``` double ``` | 116.0 | Height of your detail item. Not applicable when using ``` itemBuilder ```
 itemPadding | ``` EdgeInsetsGeometry ``` | ``` EdgeInsets.only(bottom: 80.0) ``` | Padding for item detail card. Mainly used for bottom padding.
 itemBuilder | ``` IndexedWidgetBuilder ``` | null | If you don't want default container and want to build the bottom widget yourself, you can use this builder instead of itemContent and have full control over UI. This is builder function which will receive ``` context ``` and ``` index ```. You must return a Widget.
+onCameraMove | ``` void onCameraMove(CameraPosition position) {} ``` | none | Called repeatedly as the camera continues to move.
+onCameraIdle | ``` void onCameraIdle() {} ``` | none | Called when camera movement has ended, there are no pending.
 
 
 ## Meta

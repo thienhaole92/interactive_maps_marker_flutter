@@ -28,6 +28,8 @@ class InteractiveMapsMarker extends StatefulWidget {
 
   final IndexedWidgetBuilder itemBuilder;
   final EdgeInsetsGeometry itemPadding;
+  final CameraPositionCallback onCameraMove;
+  final VoidCallback onCameraIdle;
 
   InteractiveMapsMarker({
     this.items,
@@ -37,6 +39,8 @@ class InteractiveMapsMarker extends StatefulWidget {
     this.itemHeight = 116,
     this.zoom = 12.0,
     this.itemPadding = const EdgeInsets.only(bottom: 80.0),
+    this.onCameraMove,
+    this.onCameraIdle,
   });
 
   Uint8List markerIcon;
@@ -90,7 +94,9 @@ class _InteractiveMapsMarkerState extends State<InteractiveMapsMarker> {
                     itemCount: widget.items.length,
                     controller: pageController,
                     onPageChanged: _pageChanged,
-                    itemBuilder: widget.itemBuilder != null ? widget.itemBuilder : _buildItem,
+                    itemBuilder: widget.itemBuilder != null
+                        ? widget.itemBuilder
+                        : _buildItem,
                   ),
                 ),
               ),
@@ -117,6 +123,8 @@ class _InteractiveMapsMarkerState extends State<InteractiveMapsMarker> {
               target: widget.center,
               zoom: widget.zoom,
             ),
+            onCameraMove: widget.onCameraMove,
+            onCameraIdle: widget.onCameraIdle,
           );
         },
       ),
@@ -165,8 +173,12 @@ class _InteractiveMapsMarkerState extends State<InteractiveMapsMarker> {
   Future<void> rebuildMarkers(int index) async {
     int current = widget.items[index].id;
 
-    if (widget.markerIcon == null) widget.markerIcon = await getBytesFromAsset('packages/interactive_maps_marker/assets/marker.png', 100);
-    if (widget.markerIconSelected == null) widget.markerIconSelected = await getBytesFromAsset('packages/interactive_maps_marker/assets/marker_selected.png', 100);
+    if (widget.markerIcon == null)
+      widget.markerIcon = await getBytesFromAsset(
+          'packages/interactive_maps_marker/assets/marker.png', 100);
+    if (widget.markerIconSelected == null)
+      widget.markerIconSelected = await getBytesFromAsset(
+          'packages/interactive_maps_marker/assets/marker_selected.png', 100);
 
     Set<Marker> _markers = Set<Marker>();
 
@@ -176,7 +188,8 @@ class _InteractiveMapsMarkerState extends State<InteractiveMapsMarker> {
           markerId: MarkerId(item.id.toString()),
           position: LatLng(item.latitude, item.longitude),
           onTap: () {
-            int tappedIndex = widget.items.indexWhere((element) => element.id == item.id);
+            int tappedIndex =
+                widget.items.indexWhere((element) => element.id == item.id);
             pageController.animateToPage(
               tappedIndex,
               duration: Duration(milliseconds: 300),
@@ -184,7 +197,9 @@ class _InteractiveMapsMarkerState extends State<InteractiveMapsMarker> {
             );
             _pageChanged(tappedIndex);
           },
-          icon: item.id == current ? BitmapDescriptor.fromBytes(widget.markerIconSelected) : BitmapDescriptor.fromBytes(widget.markerIcon),
+          icon: item.id == current
+              ? BitmapDescriptor.fromBytes(widget.markerIconSelected)
+              : BitmapDescriptor.fromBytes(widget.markerIcon),
         ),
       );
     });
