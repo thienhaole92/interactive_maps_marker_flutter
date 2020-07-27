@@ -78,32 +78,27 @@ class _InteractiveMapsMarkerState extends State<InteractiveMapsMarker> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<int>(
-      initialData: 0,
-      builder: (context, snapshot) {
-        return Stack(
-          children: <Widget>[
-            _buildMap(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: widget.itemPadding,
-                child: SizedBox(
-                  height: widget.itemHeight,
-                  child: PageView.builder(
-                    itemCount: widget.items.length,
-                    controller: pageController,
-                    onPageChanged: _pageChanged,
-                    itemBuilder: widget.itemBuilder != null
-                        ? widget.itemBuilder
-                        : _buildItem,
-                  ),
-                ),
+    return Stack(
+      children: <Widget>[
+        _buildMap(),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: widget.itemPadding,
+            child: SizedBox(
+              height: widget.itemHeight,
+              child: PageView.builder(
+                itemCount: widget.items.length,
+                controller: pageController,
+                onPageChanged: _pageChanged,
+                itemBuilder: widget.itemBuilder != null
+                    ? widget.itemBuilder
+                    : _buildItem,
               ),
-            )
-          ],
-        );
-      },
+            ),
+          ),
+        )
+      ],
     );
   }
 
